@@ -9,6 +9,8 @@
 package com.parse.starter;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -26,7 +28,13 @@ import android.net.wifi.WifiManager;
 import android.widget.ArrayAdapter;
 import android.content.BroadcastReceiver;
 
+
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Handler;
+
 
 
 public class MainActivity extends Activity {
@@ -36,11 +44,13 @@ public class MainActivity extends Activity {
   WifiScanReceiver wifiReciever;
   ParseObject testObject;
 
+
+  //Intent intent;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-
 
     //parse initialization
     ParseAnalytics.trackAppOpenedInBackground(getIntent());
@@ -49,9 +59,30 @@ public class MainActivity extends Activity {
     lv=(ListView)findViewById(R.id.listView);
     wifi=(WifiManager)getSystemService(Context.WIFI_SERVICE);
     wifiReciever = new WifiScanReceiver();
-    // registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+    //intent = new Intent(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
 
+
+   /* Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        long endTime = System.currentTimeMillis()+2000;
+        while(System.currentTimeMillis() < endTime){
+          synchronized (this){
+            try{
+              wait(endTime-System.currentTimeMillis());
+            }catch (Exception e){}
+          }
+        }
+
+      }
+    };*/
+    // registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
     wifi.startScan();
+
+
+    ScheduledThreadPoolExecutor exec  = new ScheduledThreadPoolExecutor(1);
+    long delay = 2000;
+    exec.scheduleWithFixedDelay(new MyTask(),0,delay, TimeUnit.MILLISECONDS);
   }
 
   @Override
@@ -71,7 +102,6 @@ public class MainActivity extends Activity {
     super.onResume();
   }
 
-
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
@@ -83,7 +113,6 @@ public class MainActivity extends Activity {
     if (id == R.id.action_settings) {
       return true;
     }
-
     return super.onOptionsItemSelected(item);
   }
 
@@ -99,22 +128,36 @@ public class MainActivity extends Activity {
     testObject.saveInBackground();
   }
 
+  public class MyTask implements Runnable{
+    @Override
+    public void run(){
+      wifi.startScan();
+    }
+  }
+
+
+
+
+  //whenever wifi is receiver, it is intercepted here
   private class WifiScanReceiver extends BroadcastReceiver{
+
     public void onReceive(Context c, Intent intent) {
+
       List<ScanResult> wifiScanList = wifi.getScanResults();
       Log.i("Connections : ", String.valueOf(wifiScanList.size()));
       wifis = new String[wifiScanList.size()];
       MainActivity obj = new MainActivity();
 
       for(int i = 0; i < wifiScanList.size(); i++){
-        wifis[i] = ((wifiScanList.get(i)).toString());
-        obj.SendToParse("1","1","N",String.valueOf(wifiScanList.get(i).level),String.valueOf(wifiScanList.get(i).SSID));
-        Log.i("Level : " ,wifiScanList.get(i).SSID + " : " + String.valueOf(wifiScanList.get(i).level));
+        String ssid = (wifiScanList.get(i).SSID).toString();
+        wifis[i] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
+        if((ssid.equals("CCSecure"))) {
+          //Log.i("asd", ((wifiScanList.get(i).SSID).toString()));
+          obj.SendToParse("1", "1", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));
+        }
+        //Log.i("Level : ", wifiScanList.get(i).SSID + " : " + String.valueOf(wifiScanList.get(i).level));
       }
       lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
     }
-
-
-
   }
 }
