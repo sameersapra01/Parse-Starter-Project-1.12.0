@@ -21,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.parse.ParseObject;
 import com.parse.ParseAnalytics;
+
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.net.wifi.ScanResult;
@@ -128,6 +130,13 @@ public class MainActivity extends Activity {
     testObject.saveInBackground();
   }
 
+
+  public void gotoImageActivity(View view)
+  {
+    Intent intent = new Intent(this,ImageActivity.class);
+    startActivity(intent);
+  }
+
   public class MyTask implements Runnable{
     @Override
     public void run(){
@@ -153,11 +162,14 @@ public class MainActivity extends Activity {
         wifis[i] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
         if((ssid.equals("CCSecure"))) {
           //Log.i("asd", ((wifiScanList.get(i).SSID).toString()));
-          obj.SendToParse("1", "1", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));
+          //obj.SendToParse("1", "1", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));
         }
         //Log.i("Level : ", wifiScanList.get(i).SSID + " : " + String.valueOf(wifiScanList.get(i).level));
       }
       lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
     }
+
+
   }
+
 }

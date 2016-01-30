@@ -33,6 +33,15 @@
         android:layout_below="@+id/wifi"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_above="@+id/secondActivity"
         android:background="#fff5d376" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Image Activity"
+        android:id="@+id/secondActivity"
+        android:layout_alignParentBottom="true"
+        android:onClick="gotoImageActivity"/>
 
 </RelativeLayout>
