@@ -15,7 +15,31 @@
 
     <string name="hello_world">Hello World!</string>
     <string name="action_settings">Settings</string>
-    <string-array name="rooms">
+    <string-array name="rooms">Rooms
+        <item>2A205</item>
+        <item>2A206</item>
+        <item>2A207</item>
+        <item>2A208</item>
+        <item>2A209</item>
+        <item>2A210</item>
+        <item>2A211</item>
+        <item>2A212</item>
         <item>2A213</item>
+        <item>2A214</item>
+        <item>2A303</item>
+        <item>2A305</item>
+        <item>2A306</item>
+        <item>2A307</item>
+        <item>2A308</item>
+        <item>2A310</item>
+        <item>2A312</item>
+        <item>2A314</item>
+    </string-array>
+
+    <string-array name="directions">Directions
+        <item>East</item>
+        <item>West</item>
+        <item>North</item>
+        <item>South</item>
     </string-array>
 </resources>

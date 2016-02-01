@@ -2,7 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin">
 
     <TextView
         android:layout_width="wrap_content"
@@ -11,20 +15,77 @@
         android:id="@+id/roomText"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginBottom="40dp"
+        android:layout_marginTop="10dp"
+        android:textSize="25dp"/>
 
-<Spinner
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"></Spinner>
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/roomsList"
+        android:layout_below="@+id/roomText"
+        android:textAlignment="center">
+    </Spinner>
 
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/directionList"
+        android:layout_below="@+id/roomsList">
+    </Spinner>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X Pos : "
+        android:id="@+id/xPos"
+        android:textSize="25dp"
+        android:layout_below="@+id/directionList"
+        android:layout_alignBaseline="@+id/xPosValue"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/xPosValue"
+        android:layout_toRightOf="@+id/xPos"
+        android:layout_below="@+id/directionList"
+        android:layout_marginTop="15dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Y Pos : "
+        android:id="@+id/yPos"
+        android:textSize="25dp"
+        android:layout_below="@+id/xPos"
+        android:layout_alignBaseline="@+id/yPosValue"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/yPosValue"
+        android:layout_toRightOf="@+id/yPos"
+        android:layout_below="@+id/xPosValue"
+        android:layout_marginTop="15dp"
+        />
 
     <Button
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Send Data"
         android:id="@+id/sendData"
+        android:onClick="sendDataToParseForEachRoom"
+        android:layout_below="@+id/yPosValue"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
         android:layout_alignParentBottom="true"
-        android:onClick="sendDataToParseForEachRoom"/>
+        android:layout_centerHorizontal="true"
+        android:onClick="gobackMainActivity"
+        />
 
 </RelativeLayout>
