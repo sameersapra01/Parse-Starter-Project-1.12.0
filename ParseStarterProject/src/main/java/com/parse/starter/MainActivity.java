@@ -133,7 +133,7 @@ public class MainActivity extends Activity {
 
   public void gotoImageActivity(View view)
   {
-    Intent intent = new Intent(this,ImageActivity.class);
+    Intent intent = new Intent(this,MapActivity.class);
     startActivity(intent);
   }
 

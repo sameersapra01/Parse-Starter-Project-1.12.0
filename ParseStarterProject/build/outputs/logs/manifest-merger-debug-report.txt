@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:10:1-46:12
+ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:10:1-45:12
 	xmlns:android
 		ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:10:11-69
 	package
@@ -30,7 +30,7 @@ ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0
 	android:name
 		ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:16:22-73
 application
-ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:18:5-44:19
+ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:18:5-43:19
 MERGED from [com.android.support:appcompat-v7:22.2.0] C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:22.2.0] C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\AndroidManifest.xml:22:5-20
 	android:label
@@ -71,10 +71,10 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:36:17-77
 	android:name
 		ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:36:27-74
-activity#com.parse.starter.ImageActivity
-ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:41:9-43:20
+activity#com.parse.starter.MapActivity
+ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:41:9-58
 	android:name
-		ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:41:19-48
+		ADDED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml:41:19-46
 uses-sdk
 INJECTED from C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:22.2.0] C:\Users\samee\Desktop\HD\Android Studio\Parse-Starter-Project-1.12.0\ParseStarterProject\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\AndroidManifest.xml:20:5-43

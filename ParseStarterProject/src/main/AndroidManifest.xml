@@ -38,9 +38,8 @@
 
         </activity>
 
-        <activity android:name=".ImageActivity">
+        <activity android:name=".MapActivity"></activity>
 
-        </activity>
     </application>
 
 </manifest>
