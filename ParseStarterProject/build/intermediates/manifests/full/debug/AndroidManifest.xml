@@ -45,6 +45,7 @@ l
             </intent-filter>
         </activity>
         <activity android:name="com.parse.starter.MapActivity" />
+        <activity android:name="com.parse.starter.SendDataTesting" />
     </application>
 
 </manifest>

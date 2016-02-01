@@ -137,6 +137,14 @@ public class MainActivity extends Activity {
     startActivity(intent);
   }
 
+  public void sendDataToParseForEachRoom(View view)
+  {
+    Intent intent = new Intent(this,SendDataTesting.class);
+    startActivity(intent);
+  }
+
+
+
   public class MyTask implements Runnable{
     @Override
     public void run(){

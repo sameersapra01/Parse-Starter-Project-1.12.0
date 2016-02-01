@@ -22,7 +22,8 @@
         android:id="@+id/wifi"
         android:textSize="35dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        />
 
 
 
@@ -37,12 +38,24 @@
         android:layout_above="@+id/secondActivity"
         android:background="#fff5d376" />
 
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Image Activity"
         android:id="@+id/secondActivity"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/sendButton"
         android:onClick="gotoImageActivity"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send Testing Data"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/sendButton"
+        android:onClick="sendDataToParseForEachRoom"/>
+
+
+
 
 </RelativeLayout>
