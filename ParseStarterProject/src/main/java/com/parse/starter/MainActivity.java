@@ -162,17 +162,22 @@ public class MainActivity extends Activity {
 
       List<ScanResult> wifiScanList = wifi.getScanResults();
       Log.i("Connections : ", String.valueOf(wifiScanList.size()));
-      wifis = new String[wifiScanList.size()];
+      wifis = new String[3];
       MainActivity obj = new MainActivity();
-
+int j=0;
       for(int i = 0; i < wifiScanList.size(); i++){
         String ssid = (wifiScanList.get(i).SSID).toString();
-        wifis[i] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
-        if((ssid.equals("CCSecure"))) {
+
+
+       // if((ssid.equals("CCSecure"))) {
+          if((ssid.equals("dlink-7D8C"))||(ssid.equals("dlink-95A8"))||(ssid.equals("dlink-7D28"))) {
+
+            Log.i("dlink","dlink");
+            wifis[j] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
+            j++;
           //Log.i("asd", ((wifiScanList.get(i).SSID).toString()));
           //obj.SendToParse("1", "1", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));
         }
-        //Log.i("Level : ", wifiScanList.get(i).SSID + " : " + String.valueOf(wifiScanList.get(i).level));
       }
       lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
     }
