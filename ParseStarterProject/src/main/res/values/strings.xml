@@ -7,16 +7,18 @@
   ~ LICENSE file in the root directory of this source tree. An additional grant
   ~ of patent rights can be found in the PATENTS file in the same directory.
   -->
+
+
 <resources>
-    <string name="parse_app_id">DWpoB5Xijsa4sjqB6N2jTgjPvPXoOvNPbSXwrtMu</string>
-    <string name="parse_client_key">h4JPyWGGKahyC31y211USBBCUUCEo2MLtWl8OFf5</string>
+    <string name="parse_app_id">wwFoK46uc4ki2YIKfNcgUPHx4emJaz2hyJZJoF9v</string>
+    <string name="parse_client_key">Q5RsLZgpaS0XV1V3rrbBBlCou1QicXFWrbmgBU7l</string>
 
     <string name="app_name">Parse Starter Project</string>
 
     <string name="hello_world">Hello World!</string>
     <string name="action_settings">Settings</string>
     <string-array name="rooms">Rooms
-        <item>2A205</item>
+  <!--      <item>2A205</item>
         <item>2A206</item>
         <item>2A207</item>
         <item>2A208</item>
@@ -33,7 +35,17 @@
         <item>2A308</item>
         <item>2A310</item>
         <item>2A312</item>
-        <item>2A314</item>
+        <item>2A314</item>-->
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 
     <string-array name="directions">Directions

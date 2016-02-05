@@ -42,7 +42,7 @@ public class SendDataTesting extends Activity implements AdapterView.OnItemSelec
         directionsList.setAdapter(adapterDirection);
     }
 
-    public void sendDataToParseForEachRoom(View view){
+ /*   public void sendDataToParseForEachRoom(View view){
         //send data to parse for each room
     }
 
@@ -50,7 +50,7 @@ public class SendDataTesting extends Activity implements AdapterView.OnItemSelec
     {
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
-    }
+    }*/
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
