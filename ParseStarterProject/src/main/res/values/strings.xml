@@ -10,8 +10,8 @@
 
 
 <resources>
-    <string name="parse_app_id">wwFoK46uc4ki2YIKfNcgUPHx4emJaz2hyJZJoF9v</string>
-    <string name="parse_client_key">Q5RsLZgpaS0XV1V3rrbBBlCou1QicXFWrbmgBU7l</string>
+    <string name="parse_app_id">uxxkdE1pMMtElu5FZ2CZjEFewBm7RgHsYdFsJFu3</string>
+    <string name="parse_client_key">BC9matoWzRg9JWKVYLsFixRU59zGmAOfnGE0Cfg9</string>
 
     <string name="app_name">Parse Starter Project</string>
 

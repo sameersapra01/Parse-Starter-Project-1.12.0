@@ -9,6 +9,7 @@
 package com.parse.starter;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -19,6 +20,7 @@ public class StarterApplication extends Application {
 
   @Override
   public void onCreate() {
+
     super.onCreate();
 
     // Enable Local Datastore.
@@ -32,5 +34,6 @@ public class StarterApplication extends Application {
     // Optionally enable public read access.
     // defaultACL.setPublicReadAccess(true);
     ParseACL.setDefaultACL(defaultACL, true);
+
   }
 }

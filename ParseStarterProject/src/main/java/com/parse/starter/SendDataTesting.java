@@ -27,7 +27,7 @@ public class SendDataTesting extends Activity implements AdapterView.OnItemSelec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.data_testing);
-        roomsList = (Spinner)findViewById(R.id.roomsList);
+/*        roomsList = (Spinner)findViewById(R.id.roomsList);
         directionsList = (Spinner)findViewById(R.id.directionList);
 
         //rooms adapter setting
@@ -39,7 +39,7 @@ public class SendDataTesting extends Activity implements AdapterView.OnItemSelec
         //directions adapter settings
         ArrayAdapter<CharSequence> adapterDirection = ArrayAdapter.createFromResource(this,R.array.directions,R.layout.support_simple_spinner_dropdown_item);
         adapterDirection.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        directionsList.setAdapter(adapterDirection);
+        directionsList.setAdapter(adapterDirection);*/
     }
 
  /*   public void sendDataToParseForEachRoom(View view){
