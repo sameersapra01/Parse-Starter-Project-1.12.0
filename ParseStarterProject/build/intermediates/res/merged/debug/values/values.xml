@@ -9,24 +9,6 @@
         <item>South</item>
     </string-array>
     <string-array name="rooms">Rooms
-  <!--      <item>2A205</item>
-        <item>2A206</item>
-        <item>2A207</item>
-        <item>2A208</item>
-        <item>2A209</item>
-        <item>2A210</item>
-        <item>2A211</item>
-        <item>2A212</item>
-        <item>2A213</item>
-        <item>2A214</item>
-        <item>2A303</item>
-        <item>2A305</item>
-        <item>2A306</item>
-        <item>2A307</item>
-        <item>2A308</item>
-        <item>2A310</item>
-        <item>2A312</item>
-        <item>2A314</item>-->
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -37,6 +19,24 @@
         <item>8</item>
         <item>9</item>
         <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
     </string-array>
     <!-- From: file:/C:/Users/samee/Desktop/HD/Android%20Studio/Parse-Starter-Project-1.12.0/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>

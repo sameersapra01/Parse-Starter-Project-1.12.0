@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,28 +31,38 @@ import android.widget.Toast;
 import com.parse.ParseAnalytics;
 import com.parse.ParseObject;
 
-import java.util.List;
 
+
+import java.util.List;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
-  // ListView lv;
-  WifiManager wifi;
-  String wifis[];
-  WifiScanReceiver wifiReciever;
-  ParseObject testObject;
-  TextView roomSelected;
-  String room;
-  //spinner
-  Spinner roomsList;
-  Spinner directionsList;
 
-  ArrayAdapter<String> roomsAdapter;
-  ArrayAdapter<String> directionAdapter;
+    WifiManager wifi;
+    String wifis[];
+    WifiScanReceiver wifiReciever;
+    ParseObject testObject;
+    TextView directionSelected;
+    TextView yPosValue;
 
-  SendDataToParseTask sendDataToParseTask;
+    //to store direction and data point
+    String yPos;
+    String xPos;
+    String direction;
+    //spinner
+    Spinner directionsList;
 
-  boolean spinnerOnItemInit = false;
+    ArrayAdapter<String> roomsAdapter;
+    ArrayAdapter<String> directionAdapter;
+
+    SendDataToParseTask sendDataToParseTask;
+
+    boolean spinnerOnItemInit = false;
+    boolean dataSentToParse = true;
+
+    private static final double Y_DIMENSION   = 28.7;
 
 
   @Override
@@ -61,19 +72,13 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
       setContentView(R.layout.activity_main);
 
       ParseAnalytics.trackAppOpenedInBackground(getIntent());
-/*      roomsList = (Spinner) findViewById(R.id.roomsList);
       directionsList = (Spinner) findViewById(R.id.directionList);
-
-      //rooms adapter setting
-      ArrayAdapter<CharSequence> adapterRooms = ArrayAdapter.createFromResource(this, R.array.rooms, R.layout.support_simple_spinner_dropdown_item);
-      adapterRooms.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-      roomsList.setAdapter(adapterRooms);
-      roomsList.setOnItemSelectedListener(this);
 
       //directions adapter settings
       ArrayAdapter<CharSequence> adapterDirection = ArrayAdapter.createFromResource(this, R.array.directions, R.layout.support_simple_spinner_dropdown_item);
       adapterDirection.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-      directionsList.setAdapter(adapterDirection);*/
+      directionsList.setAdapter(adapterDirection);
+      directionsList.setOnItemSelectedListener(this);
 
 
       //wifi indoor code starts here
@@ -86,10 +91,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     //real time code
    // wifi.startScan();
 
-    /*ScheduledThreadPoolExecutor exec  = new ScheduledThreadPoolExecutor(1);
+  /*  ScheduledThreadPoolExecutor exec  = new ScheduledThreadPoolExecutor(1);
     long delay = 2000;
     exec.scheduleWithFixedDelay(new MyTask(),0,delay, TimeUnit.MILLISECONDS);*/
   }
+/*
+    public class MyTask implements  Runnable{
+        @Override
+        public void run() {
+            wifi.startScan();
+        }
+    }*/
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
@@ -127,9 +139,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
   //this code sends a sample data to pasre...Works-Tested.
   public void sendDataToParseForEachRoom(View view)
   {
-    //instantiate the asynctask
-    sendDataToParseTask = new SendDataToParseTask();
-    sendDataToParseTask.execute();
+        yPosValue = (EditText)findViewById(R.id.yPosValue);
+        yPos = yPosValue.getText().toString();
+        //instantiate the asynctask
+        sendDataToParseTask = new SendDataToParseTask();
+        sendDataToParseTask.execute();
   }
 
 
@@ -140,10 +154,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
       //because this listener is called on initialization, used bool to stop that init.
       if (spinnerOnItemInit) {
         int i = 0;
-        roomSelected = (TextView) view;
+        directionSelected = (TextView) view;
 
-        room = roomSelected.getText().toString();
-        Log.i("Selected : ", room.toString());
+        direction = directionSelected.getText().toString();
+       Toast.makeText(this,direction.toString(),Toast.LENGTH_SHORT).show();
       }
       spinnerOnItemInit = true;
     }
@@ -161,23 +175,17 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected String doInBackground(Void... params) {
-int i=0;
+        int i = 0;
 
-        while(i<5) {
-           // wifi.startScan();
 
-            testObject = new ParseObject("DataPoints");
-        //sending data to parse
-        testObject.put("xPos", "x");
-        testObject.put("yPos", "y");
-        testObject.put("direction", "direc");
-        testObject.put("signalStrength", "ss");
-        testObject.put("SSID", "ssid");
-        testObject.saveInBackground();
-        i++;
+        while (i < 20) {
+            if (dataSentToParse) {
+                wifi.startScan();
+                i++;
+                dataSentToParse = false;
+            }
         }
-
-      return "Data Sent";
+        return "Data Sent";
     }
 
     @Override
@@ -193,40 +201,33 @@ int i=0;
   private class WifiScanReceiver extends BroadcastReceiver {
     public void onReceive(Context c, Intent intent) {
       try {
-          final PendingResult result = goAsync();
-          Thread thread = new Thread(){
-              @Override
-              public void run() {
-                  result.finish();
-              }
-          };
-          thread.start();
-
-
         List<ScanResult> wifiScanList = wifi.getScanResults();
         //wifis = new String[3];
         //MainActivity obj = new MainActivity();
        // int j = 0;
         for (int i = 0; i < wifiScanList.size(); i++) {
-          String ssid = (wifiScanList.get(i).SSID).toString();
-          if ((ssid.equals("dlink-7D8C")) || (ssid.equals("dlink-95A8")) || (ssid.equals("dlink-7D28")) || ssid.equals("dlink-7D2A-5GHz")) {
+            String ssid = (wifiScanList.get(i).SSID).toString();
+            if ((ssid.equals("dlink-7D8C")) || (ssid.equals("dlink-95A8")) || (ssid.equals("dlink-7D28")) || ssid.equals("dlink-7D2A-5GHz")) {
 
             Log.i("dlink","dlink");
             //wifis[j] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
             //j++;
             //Log.i("dlink","dlink");
- /*           obj.SendToParse("x", "y", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));*/
+            /*           obj.SendToParse("x", "y", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));*/
 
             testObject = new ParseObject("DataPoints");
             //sending data to parse
-            testObject.put("xPos", "x");
-            testObject.put("yPos", "y");
-            testObject.put("direction", "direc");
-            testObject.put("signalStrength", "ss");
-            testObject.put("SSID", "ssid");
+            testObject.put("xPos", "1");
+            testObject.put("yPos", yPos.toString());
+            testObject.put("direction", direction.toString());
+            testObject.put("signalStrength",String.valueOf(wifiScanList.get(i).level) );
+            testObject.put("SSID", String.valueOf(wifiScanList.get(i).SSID));
             testObject.saveInBackground();
+
+
           }
         }
+          dataSentToParse=true;
         //lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
       } catch (Exception e) {
         Toast.makeText(getBaseContext(), "Error Occurred...", Toast.LENGTH_SHORT).show();

@@ -1563,7 +1563,7 @@ containing a value of this type.
         public static final int decor_content_parent=0x7f0d003e;
         public static final int default_activity_button=0x7f0d0029;
         public static final int dialog=0x7f0d001b;
-        public static final int directionList=0x7f0d0051;
+        public static final int directionList=0x7f0d0050;
         public static final int disableHome=0x7f0d000c;
         public static final int dropdown=0x7f0d001c;
         public static final int edit_query=0x7f0d0042;
@@ -1630,7 +1630,7 @@ containing a value of this type.
         public static final int useLogo=0x7f0d0012;
         public static final int withText=0x7f0d001a;
         public static final int wrap_content=0x7f0d001d;
-        public static final int xPos=0x7f0d0050;
+        public static final int xPos=0x7f0d0051;
         public static final int xPosValue=0x7f0d0052;
         public static final int yPos=0x7f0d0053;
         public static final int yPosValue=0x7f0d0054;
