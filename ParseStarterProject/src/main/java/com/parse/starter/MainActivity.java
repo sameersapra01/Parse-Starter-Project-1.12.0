@@ -147,9 +147,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
   }
 
 
+    public void dataTestingActivity(View view)
+    {
+        Intent intent = new Intent(this,SendDataTesting.class);
+        startActivity(intent);
+    }
+
   @Override
   public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     try {
       //because this listener is called on initialization, used bool to stop that init.
       if (spinnerOnItemInit) {
@@ -223,14 +228,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             testObject.put("signalStrength",String.valueOf(wifiScanList.get(i).level) );
             testObject.put("SSID", String.valueOf(wifiScanList.get(i).SSID));
             testObject.saveInBackground();
-
-
           }
         }
           dataSentToParse=true;
         //lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
       } catch (Exception e) {
-        Toast.makeText(getBaseContext(), "Error Occurred...", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(), "Error Occurred...", Toast.LENGTH_SHORT).show();
       }
     }
   }
