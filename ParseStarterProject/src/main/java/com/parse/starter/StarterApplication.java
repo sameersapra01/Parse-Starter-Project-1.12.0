@@ -22,7 +22,7 @@ public class StarterApplication extends Application {
   public void onCreate() {
 
     super.onCreate();
-
+ 
     // Enable Local Datastore.
     Parse.enableLocalDatastore(this);
 
@@ -32,7 +32,7 @@ public class StarterApplication extends Application {
     ParseUser.enableAutomaticUser();
     ParseACL defaultACL = new ParseACL();
     // Optionally enable public read access.
-    // defaultACL.setPublicReadAccess(true);
+    defaultACL.setPublicReadAccess(true);
     ParseACL.setDefaultACL(defaultACL, true);
 
   }

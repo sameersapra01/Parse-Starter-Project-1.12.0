@@ -38,7 +38,6 @@
 
         </activity>
 
-        <activity android:name=".MapActivity"></activity>
         <activity android:name=".SendDataTesting"></activity>
 
     </application>

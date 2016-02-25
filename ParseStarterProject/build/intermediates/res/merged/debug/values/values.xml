@@ -239,8 +239,8 @@
     <string name="action_settings">Settings</string>
     <string name="app_name">Parse Starter Project</string>
     <string name="hello_world">Hello World!</string>
-    <string name="parse_app_id">uxxkdE1pMMtElu5FZ2CZjEFewBm7RgHsYdFsJFu3</string>
-    <string name="parse_client_key">BC9matoWzRg9JWKVYLsFixRU59zGmAOfnGE0Cfg9</string>
+    <string name="parse_app_id">OVSZTyl4JAAdm4zXvdtec9J8I5mZnlXR3j2VSPY5</string>
+    <string name="parse_client_key">AeqiIf3mhU1W6hdbBxn2QsAIXf0ofhhCaF3h407O</string>
     <!-- From: file:/C:/Users/samee/Desktop/HD/Android%20Studio/Parse-Starter-Project-1.12.0/ParseStarterProject/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>

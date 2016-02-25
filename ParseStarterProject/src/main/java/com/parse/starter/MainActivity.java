@@ -63,6 +63,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     boolean dataSentToParse = true;
 
     private static final double Y_DIMENSION   = 28.7;
+    int jj = 0;
 
 
   @Override
@@ -180,14 +181,12 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected String doInBackground(Void... params) {
-        int i = 0;
-
-
-        while (i < 20) {
+        jj = 0;
+        while (jj < 20) {
             if (dataSentToParse) {
-                wifi.startScan();
-                i++;
                 dataSentToParse = false;
+                wifi.startScan();
+
             }
         }
         return "Data Sent";
@@ -207,29 +206,21 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void onReceive(Context c, Intent intent) {
       try {
         List<ScanResult> wifiScanList = wifi.getScanResults();
-        //wifis = new String[3];
-        //MainActivity obj = new MainActivity();
-       // int j = 0;
         for (int i = 0; i < wifiScanList.size(); i++) {
             String ssid = (wifiScanList.get(i).SSID).toString();
-            if ((ssid.equals("dlink-7D8C")) || (ssid.equals("dlink-95A8")) || (ssid.equals("dlink-7D28")) || ssid.equals("dlink-7D2A-5GHz")) {
+            if ((ssid.equals("dlink-7D8C")) || (ssid.equals("dlink-95A8")) || (ssid.equals("dlink-7D28"))) {
 
-            Log.i("dlink","dlink");
-            //wifis[j] = ssid + "  " + String.valueOf((wifiScanList.get(i).level));
-            //j++;
-            //Log.i("dlink","dlink");
-            /*           obj.SendToParse("x", "y", "N", String.valueOf(wifiScanList.get(i).level), String.valueOf(wifiScanList.get(i).SSID));*/
-
-            testObject = new ParseObject("DataPoints");
-            //sending data to parse
-            testObject.put("xPos", "1");
-            testObject.put("yPos", yPos.toString());
-            testObject.put("direction", direction.toString());
-            testObject.put("signalStrength",String.valueOf(wifiScanList.get(i).level) );
-            testObject.put("SSID", String.valueOf(wifiScanList.get(i).SSID));
-            testObject.saveInBackground();
+                testObject = new ParseObject("NewDataPoints");
+                //sending data to parse
+                testObject.put("xPos", "1");
+                testObject.put("yPos", yPos.toString());
+                testObject.put("direction", direction.toString());
+                testObject.put("signalStrength",String.valueOf(wifiScanList.get(i).level) );
+                testObject.put("SSID", String.valueOf(wifiScanList.get(i).SSID));
+                testObject.saveInBackground();
           }
         }
+          jj++;
           dataSentToParse=true;
         //lv.setAdapter(new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, wifis));
       } catch (Exception e) {

@@ -29,11 +29,29 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/realTimeLoc"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
+        android:id="@+id/testingText2"
+        android:textSize="30dp"
+        android:text="  7D28    7D8C     95A8"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/testingText2"
+        android:layout_margin="10dp"
+        android:id="@+id/testingText1"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/testingText1"
+        android:layout_margin="10dp"
         android:id="@+id/testingText"
         android:textSize="30dp"/>
 
