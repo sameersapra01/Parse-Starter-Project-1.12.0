@@ -9,6 +9,8 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Menu;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import android.os.Handler;
 
 /**
  * Created by samee on 2016-02-01.
@@ -53,6 +56,7 @@ public class SendDataTesting extends Activity {
     //UI variable
     TextView ch;
     TextView ch1;
+    TextView ch0;
 
     //list of class containg 6 properties.
     List<DataPoint> dataPoints;
@@ -85,6 +89,7 @@ public class SendDataTesting extends Activity {
             setContentView(R.layout.data_testing);
             ch = (TextView) findViewById(R.id.testingText);
             ch1 = (TextView) findViewById(R.id.testingText1);
+            ch0 = (TextView) findViewById(R.id.realTimeLoc);
 
 
             //initializing list of DataPoint class.
@@ -94,7 +99,12 @@ public class SendDataTesting extends Activity {
             wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
             wifiReciever = new WifiScanReceiver();
 
-            registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+            HandlerThread handlerThread = new HandlerThread("ht");
+            handlerThread.start();
+            Looper looper = handlerThread.getLooper();
+            Handler handler = new Handler(looper);
+
+            registerReceiver(wifiReciever, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION),null,handler);
 
             //get the mean from parse and store it in a list of DataPoint class in a thread
             Thread th1 = new Thread(new getMeanFromParse());
@@ -113,13 +123,13 @@ public class SendDataTesting extends Activity {
 
 
 
-            //problems are the old created threads will show the old location for a new position...
-/*            Thread realTimeDP = new Thread(new CreateNewUpdateLocationThreads());
+/*            //problems are the old created threads will show the old location for a new position...
+            Thread realTimeDP = new Thread(new CreateNewUpdateLocationThreads());
             realTimeDP.start();*/
 
             //can be in one single thread instead of calling it every 2 seconds.
             ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-            long delay = 1100;
+            long delay = 100;
             exec.scheduleWithFixedDelay(new UpdateLocation(), 0, delay, TimeUnit.MILLISECONDS);
 
         }
@@ -170,10 +180,13 @@ public class SendDataTesting extends Activity {
         @Override
         public void run() {
             try {
-                while (true) {
+                int numberOfThreads = 0;
+                while (numberOfThreads < 3) {
                     Thread locationThread = new Thread(new UpdateLocation());
                     locationThread.start();
+                    numberOfThreads++;
                 }
+
             }
             catch (Exception ex)
             {
@@ -187,46 +200,45 @@ public class SendDataTesting extends Activity {
         @Override
         public void run() {
             try {
-                    //   int i = 0;
-                    int i = 0;
-                    if (RTDataThreadControl) {
+                int i = 0;
+                if (RTDataThreadControl)
+                {
+                    //setting the value of all 3 router's level to 0
+                    Router7D28Level = 0;
+                    Router7D8CLevel = 0;
+                    Router95A8Level = 0;
 
-                        //setting the value of all 3 router's level to 0
-                        Router7D28Level = 0;
-                        Router7D8CLevel = 0;
-                        Router95A8Level = 0;
-
-                        //compare the real time data with mean data and update the position
-                        while (i < numberOfTimesRTData) {
-                            wifi.startScan();
-                            if (calculationsForDataPointControl) {
-                                //get the mean of 3 routers fo 5 rows
-                                //Log.i("sum 3", String.valueOf(i) + " " + String.valueOf(Router95A8Level));
-                                i++;
-                                calculationsForDataPointControl = false;
-                                RTDataThreadControl = false;
-                            }
+                    //compare the real time data with mean data and update the position
+                    while (i < numberOfTimesRTData) {
+                        wifi.startScan();
+                        if (calculationsForDataPointControl) {
+                            //get the mean of 3 routers fo 5 rows
+                            //Log.i("sum 3", String.valueOf(i) + " " + String.valueOf(Router95A8Level));
+                            i++;
+                            calculationsForDataPointControl = false;
+                            RTDataThreadControl = false;
                         }
-                        //calculating the mean of 3 different RT routers.
-                        meanOfRouter7D28 = Router7D28Level / numberOfTimesRTData;
-                        meanOfRouter7D8C = Router7D8CLevel / numberOfTimesRTData;
-                        meanOfRouter95A8 = Router95A8Level / numberOfTimesRTData;
+                    }
+                    //calculating the mean of 3 different RT routers.
+                    meanOfRouter7D28 = Router7D28Level / numberOfTimesRTData;
+                    meanOfRouter7D8C = Router7D8CLevel / numberOfTimesRTData;
+                    meanOfRouter95A8 = Router95A8Level / numberOfTimesRTData;
 
-                        Log.i("mean 1", String.valueOf(meanOfRouter7D28));
-                        Log.i("mean 2", String.valueOf(meanOfRouter7D8C));
-                        Log.i("mean 3", String.valueOf(meanOfRouter95A8));
+                    Log.i("mean of 7D28", String.valueOf(meanOfRouter7D28));
+                    Log.i("mean of 7D8C", String.valueOf(meanOfRouter7D8C));
+                    Log.i("mean of 95A8", String.valueOf(meanOfRouter95A8));
 
-                        SendDataTesting.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                ch1.setText(String.valueOf(Router7D28Level) + " " + String.valueOf(Router7D8CLevel) + " " + String.valueOf(Router95A8Level));
-                                ch.setText(String.valueOf(meanOfRouter7D28) + " " + String.valueOf(meanOfRouter7D8C) + " " + String.valueOf(meanOfRouter95A8));
-                            }
-                        });
+               /*     SendDataTesting.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ch1.setText(String.valueOf(Router7D28Level) + " " + String.valueOf(Router7D8CLevel) + " " + String.valueOf(Router95A8Level));
+                            ch.setText(String.valueOf(meanOfRouter7D28) + " " + String.valueOf(meanOfRouter7D8C) + " " + String.valueOf(meanOfRouter95A8));
+                        }
+                    });*/
 
 
-                        //compare RT mean with the off-line mean data and update the position on the map
-                   /* for (DataPoint dp:dataPoints) {
+                /*        //compare RT mean with the off-line mean data and update the position on the map
+                    for (DataPoint dp:dataPoints) {
 
                         //do linear search
 
@@ -236,18 +248,57 @@ public class SendDataTesting extends Activity {
                         {
                             //found the location and update it on the map
                             Toast.makeText(getBaseContext(),dp.xPos + "  " + dp.yPos,Toast.LENGTH_SHORT).show();
-                        }
-
-                        //find the possible positions from off-line mean
-                        if(true)
+                        }*/
+                        //get the nearest router
+                            //meanOfRouter95A8 is neareset to the user
+                        if (meanOfRouter95A8 > meanOfRouter7D28  && meanOfRouter95A8 > meanOfRouter7D8C)
                         {
+                            //meanOfRouter95A8 is neareset to the user
+                           // Toast.makeText(getBaseContext() , Router95A8.toString(),Toast.LENGTH_SHORT).show();
+                            Log.i("correct11111", String.valueOf(meanOfRouter95A8));
+                            SendDataTesting.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ch0.setText("near : 95A8");
+                                }
+                            });
+                          //  break;
+                        }
 
+                            //meanOfRouter7D8C is nearest to the user
+                        else if(meanOfRouter7D8C > meanOfRouter7D28 && meanOfRouter7D8C > meanOfRouter95A8)
+                        {
+                            //meanOfRouter7D8C is nearest to the user
+                            //Toast.makeText(getBaseContext() , Router7D8C.toString(),Toast.LENGTH_SHORT).show();
+                            Log.i("correct22222", String.valueOf(meanOfRouter7D8C));
+                            SendDataTesting.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ch0.setText("near : 7D8C");
+                                }
+                            });
+                          //  break;
+                        }
+
+                        //meanOfRouter7D28 is nearest to the user
+                        else if(meanOfRouter7D28 > meanOfRouter95A8 && meanOfRouter7D28 > meanOfRouter7D8C)
+                        {
+                            //meanOfRouter7D28 is nearest to the user
+                           // Toast.makeText(getBaseContext() , Router7D28.toString(),Toast.LENGTH_SHORT).show();
+                            Log.i("correct333333", String.valueOf(meanOfRouter7D28));
+                            SendDataTesting.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    ch0.setText("near : 7D28");
+                                }
+                            });
+                            //break;
                         }
                     }
-*/
-                        //start another thread
-                        RTDataThreadControl = true;
-                    }
+
+                    //start another thread
+                    RTDataThreadControl = true;
+                //}
 
             }
             catch (Exception ex)
@@ -262,9 +313,11 @@ public class SendDataTesting extends Activity {
         public void onReceive(Context c, Intent intent) {
             try {
                 List<ScanResult> wifiScanList = wifi.getScanResults();
+
                 for (int i = 0; i < wifiScanList.size(); i++) {
                     String ssid = (wifiScanList.get(i).SSID).toString();
                     if ((ssid.equals(Router7D8C))){
+
                         Router7D8CLevel += wifiScanList.get(i).level;
                     }
                     else if(ssid.equals(Router95A8)) {
@@ -283,6 +336,112 @@ public class SendDataTesting extends Activity {
     }
 
 
+    /*public class UpdateLocation implements  Runnable{
+
+        //level of each router.
+        int Router95A8Level =0;
+        int Router7D28Level=0;
+        int Router7D8CLevel=0;
+
+        //mean and sum of real time values.
+        double meanOfRouter95A8 = 0;
+        double meanOfRouter7D28 = 0;
+        double meanOfRouter7D8C = 0;
+
+        @Override
+        public void run() {
+            try {
+                int i = 0;
+
+                //compare the real time data with mean data and update the position
+                while (i < numberOfTimesRTData) {
+                    wifi.startScan();
+                    if (calculationsForDataPointControl) {
+                        //get the mean of 3 routers fo 5 rows
+                        //Log.i("sum 3", String.valueOf(i) + " " + String.valueOf(Router95A8Level));
+                        i++;
+                        calculationsForDataPointControl = false;
+                        RTDataThreadControl = false;
+                    }
+                }
+                //calculating the mean of 3 different RT routers.
+                meanOfRouter7D28 = Router7D28Level / numberOfTimesRTData;
+                meanOfRouter7D8C = Router7D8CLevel / numberOfTimesRTData;
+                meanOfRouter95A8 = Router95A8Level / numberOfTimesRTData;
+
+                Log.i("mean of 7D28", String.valueOf(meanOfRouter7D28));
+                Log.i("mean of 7D8C", String.valueOf(meanOfRouter7D8C));
+                Log.i("mean of 95A8", String.valueOf(meanOfRouter95A8));
+
+             *//*   SendDataTesting.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ch1.setText(String.valueOf(Router7D28Level) + " " + String.valueOf(Router7D8CLevel) + " " + String.valueOf(Router95A8Level));
+                        ch.setText(String.valueOf(meanOfRouter7D28) + " " + String.valueOf(meanOfRouter7D8C) + " " + String.valueOf(meanOfRouter95A8));
+                    }
+                });*//*
+
+
+                    //compare RT mean with the off-line mean data and update the position on the map
+               *//* for (DataPoint dp:dataPoints) {
+
+                    //do linear search
+
+                    //exact search
+                    if(dp.dlink95A8.equals(String.valueOf(meanOfRouter95A8))&&dp.dlink7D28.equals(String.valueOf(meanOfRouter7D28))
+                            &&dp.dlink7D8C.equals(String.valueOf(meanOfRouter7D8C)))
+                    {
+                        //found the location and update it on the map
+                        Toast.makeText(getBaseContext(),dp.xPos + "  " + dp.yPos,Toast.LENGTH_SHORT).show();
+                    }
+
+                    //find the possible positions from off-line mean
+                    if(true)
+                    {
+
+                    }
+                }
+*//*
+
+            }
+            catch (Exception ex)
+            {
+                Toast.makeText(getBaseContext(),ex.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        public class WifiScanReceiver extends BroadcastReceiver {
+            public void onReceive(Context c, Intent intent) {
+                try {
+                    List<ScanResult> wifiScanList = wifi.getScanResults();
+
+                    for (int i = 0; i < wifiScanList.size(); i++) {
+                        String ssid = (wifiScanList.get(i).SSID).toString();
+                        if ((ssid.equals(Router7D8C))){
+
+                            Router7D8CLevel += wifiScanList.get(i).level;
+                        }
+                        else if(ssid.equals(Router95A8)) {
+                            Router95A8Level += wifiScanList.get(i).level;
+                        }
+                        else if((ssid.equals(Router7D28))){
+                            Router7D28Level += wifiScanList.get(i).level;
+                        }
+                    }
+                    calculationsForDataPointControl = true;
+                    //i++;
+                } catch (Exception e) {
+                    Toast.makeText(getBaseContext(), "Error Occurred...", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }*/
+
+
+
+
+
+
 
     public class getMeanFromParse implements Runnable{
 
@@ -291,10 +450,8 @@ public class SendDataTesting extends Activity {
         public void run() {
 
             try {
-
-
                 while (y < 29) {
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("MeanData");
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("MeanData2");
                     query.whereEqualTo("xPos", "1");
                     query.whereEqualTo("yPos", String.valueOf(y));
                     query.setLimit(4);
@@ -343,36 +500,7 @@ public class SendDataTesting extends Activity {
 
 
 
-                       /*
 
-                        //get the nearest router
-                            //meanOfRouter95A8 is neareset to the user
-                        else if (meanOfRouter95A8 > meanOfRouter7D28  && meanOfRouter95A8 > meanOfRouter7D8C)
-                        {
-                            //meanOfRouter95A8 is neareset to the user
-                           // Toast.makeText(getBaseContext() , Router95A8.toString(),Toast.LENGTH_SHORT).show();
-                            Log.i("correct11111", String.valueOf(meanOfRouter95A8));
-
-                            break;
-                        }
-
-                            //meanOfRouter7D8C is nearest to the user
-                        else if(meanOfRouter7D8C > meanOfRouter7D28 && meanOfRouter7D8C > meanOfRouter95A8)
-                        {
-                            //meanOfRouter7D8C is nearest to the user
-                            //Toast.makeText(getBaseContext() , Router7D8C.toString(),Toast.LENGTH_SHORT).show();
-                            Log.i("correct22222", String.valueOf(meanOfRouter95A8));
-                            break;
-                        }
-
-                        //meanOfRouter7D28 is nearest to the user
-                        else if(meanOfRouter7D28 > meanOfRouter95A8 && meanOfRouter7D28 > meanOfRouter7D8C)
-                        {
-                            //meanOfRouter7D28 is nearest to the user
-                           // Toast.makeText(getBaseContext() , Router7D28.toString(),Toast.LENGTH_SHORT).show();
-                            Log.i("correct333333", String.valueOf(meanOfRouter95A8));
-                            break;
-                        }*/
 
 
  /*private class MeanTask extends AsyncTask<Void,Void,String>{
@@ -431,3 +559,4 @@ public class SendDataTesting extends Activity {
         }
     }
 */
+

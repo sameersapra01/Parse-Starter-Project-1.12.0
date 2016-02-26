@@ -27,7 +27,9 @@
         android:id="@+id/realTimeLoc"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="near : "
+        android:layout_marginBottom="10dp"/>
 
 
     <TextView
@@ -61,7 +63,8 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:layout_alignParentBottom="true"
-        android:onClick="btnClick"/>
+        android:onClick="btnClick"
+        android:id="@+id/btn"/>
 
 <!--    <TextView
         android:layout_width="wrap_content"
